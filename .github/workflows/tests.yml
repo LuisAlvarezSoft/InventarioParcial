@@ -42,13 +42,6 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
-      - name: Wait for MySQL
-        run: |
-          
-          if mysqladmin ping -h127.0.0.1 -uroot -p1234 --silent; then
-            echo "MySQL está listo."
-            done
-
       - name: Configure Database
         env:
           DB_CONNECTION: mysql
