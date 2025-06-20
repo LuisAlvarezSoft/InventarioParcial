@@ -20,7 +20,6 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: 1234
           MYSQL_ROOT_PASSWORD: 1234
-        # 🚫 healthcheck eliminado para evitar que el job muera antes de los steps
 
     steps:
       - name: Checkout repo
@@ -41,6 +40,18 @@ jobs:
 
       - name: Generate app key
         run: php artisan key:generate
+
+      - name: Wait for MySQL to be really ready
+        run: |
+          echo "esperando a que MySQL este listo"
+          for i in {1..20}; do
+            if mysql -h127.0.0.1 -uroot -p1234 -e "SELECT 1;" > /dev/null 2>&1; then
+              echo "MySQL está listo."
+              break
+            fi
+            echo "intento $i"
+            sleep 3
+          done
 
       - name: Configure Database
         env:
