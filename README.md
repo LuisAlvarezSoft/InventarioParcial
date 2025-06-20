@@ -4,6 +4,10 @@ se instala con composer
 
 composer update / composer install
 
+corremos las migraciones con
+
+php artisan migrate
+
 luego se corre la aplicación
 
 php artisan serve
@@ -24,3 +28,5 @@ php artisan dusk
 y corremos locust
 
 locust -f locustfile.py --host=http://localhost:8000
+
+y ya profe, no me pida mas, ando mas tostao que cafe recien hecho
