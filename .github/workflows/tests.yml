@@ -20,11 +20,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: 1234
           MYSQL_ROOT_PASSWORD: 1234
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
+        # 🚫 healthcheck eliminado para evitar que el job muera antes de los steps
 
     steps:
       - name: Checkout repo
@@ -48,15 +44,10 @@ jobs:
 
       - name: Wait for MySQL
         run: |
-          echo "esperando sql"
-          for i in {1..15}; do
-            if mysqladmin ping -h127.0.0.1 -uroot -p1234 --silent; then
-              echo "sql prendido"
-              break
-            fi
-            echo "intento $i"
-            sleep 3
-          done
+          
+          if mysqladmin ping -h127.0.0.1 -uroot -p1234 --silent; then
+            echo "MySQL está listo."
+            done
 
       - name: Configure Database
         env:
