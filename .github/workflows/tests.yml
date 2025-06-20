@@ -24,7 +24,7 @@ jobs:
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
     steps:
       - name: Checkout repo
@@ -45,6 +45,18 @@ jobs:
 
       - name: Generate app key
         run: php artisan key:generate
+
+      - name: Wait for MySQL
+        run: |
+          echo "esperando sql"
+          for i in {1..15}; do
+            if mysqladmin ping -h127.0.0.1 -uroot -p1234 --silent; then
+              echo "sql prendido"
+              break
+            fi
+            echo "intento $i"
+            sleep 3
+          done
 
       - name: Configure Database
         env:
